@@ -5,15 +5,16 @@
   %thead
     %div
     = form_tag movies_path, method: :get, id: 'ratings_form' do
+      = hidden_field_tag :sort, params[:sort] if params[:sort]
       Include:
       - @all_ratings.each do |rating|
         = rating[:name]
         = check_box_tag "ratings[#{rating[:name]}]", rating[:value], rating[:value], id: "ratings_#{rating[:name]}"
       = submit_tag 'Refresh', id: 'ratings_submit'
     %tr
-      %th{params[:sort] == "title" ? {:class => "hilite"} : {}}= link_to "Movie Title", movies_path(:sort => "title"), :id => "title_header", "data-no-turbolink" => "true"
+      %th{params[:sort] == "title" ? {:class => "hilite"} : {}}= link_to "Movie Title", movies_path(:sort => "title", ratings: params[:ratings]), :id => "title_header", "data-no-turbolink" => "true"
       %th Rating
-      %th{params[:sort] == "release_date" ? {:class => "hilite"} : {}}= link_to "Release Date", movies_path(:sort => "release_date"), :id => "release_date_header", "data-no-turbolink" => "true"
+      %th{params[:sort] == "release_date" ? {:class => "hilite"} : {}}= link_to "Release Date", movies_path(:sort => "release_date", ratings: params[:ratings]), :id => "release_date_header", "data-no-turbolink" => "true"
       %th More Info
   %tbody
     - @movies.each do |movie|
